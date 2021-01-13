@@ -10,7 +10,7 @@ on:
 env:              #change ROM_URL,ROM_NAME,ZIP_NAME,ROMZIP_NAME respectivley. ROM_NAME is case sensitive 
   ROM_URL: https://gdmbd.sasohan.workers.dev/MIUI_Hellas_XTRV_whyred_21.1.6_10.zip
   ROM_NAME: MIUI
-  ZIP_NAME: MIUI-Hellas-@PriyoGSI-13-01-2021
+  ZIP_NAME: MIUI-Hellas-RN5Pro-@PriyoGSI-13-01-2021
   SECRETS_PASSWORD: ${{ secrets.SFPASS }}
   TZ: Asia/Bangladesh
   SFDIRA1: cd /home/smpriyo/pfs/projects/priyogsis/files/PriyoFiles

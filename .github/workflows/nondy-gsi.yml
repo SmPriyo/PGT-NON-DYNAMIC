@@ -1,53 +1,62 @@
-name: Building GSI..
+name: TIME TO BUILD......
 
-on: [push]
+on: 
+  #releasepush:
+    #pushbuild
 
-env:
-  ROM_URL: https://otafsg1.h2os.com/patch/amazone2/GLO/OnePlus5TOxygen/OnePlus5TOxygen_43.J.69_GLO_069_2010292144/OnePlus5TOxygen_43_OTA_069_all_2010292144_de4a6fa.zip
-  ROM_NAME: OxygenOS
-  ZIP_NAME: Oxygen-test
-  TZ: Asia/Kolkata
+  watch: 
+      types: [started]
+    
+env:              #change ROM_URL,ROM_NAME,ZIP_NAME,ROMZIP_NAME respectivley. ROM_NAME is case sensitive 
+  ROM_URL: https://gdmbd.sasohan.workers.dev/MIUI_Hellas_XTRV_whyred_21.1.6_10.zip
+  ROM_NAME: MIUI
+  ZIP_NAME: MIUI-Hellas-PriyoGSI-13-01-2021
+  SECRETS_PASSWORD: ${{ secrets.SFPASS }}
+  TZ: Asia/Bangladesh
+  SFDIRA1: cd /home/smpriyo/pfs/projects/priyogsis/files/PriyoFiles
+  SFDIRA2: cd /home/smpriyo/pfs/projects/priyogsis/files/PriyoDumps
+  SFUSER: ${{ secrets.SFUSER }}
+  
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+
 
     steps:
        - name: Checkout
-         uses: actions/checkout@master
+         uses: actions/checkout@main
        
-       - name: Clean Up
-         run: |
-           docker rmi `docker images -q`
-           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
-           sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
-           sudo -E apt-get update
-           sudo -E apt-get -y autoremove --purge
-           sudo -E apt-get clean 
            
-       - name: Initializing environment
+       - name: Setting up the SPICES
          run: |
             sudo -E apt-get -qq update
-            sudo -E apt-get -qq install git openjdk-8-jdk wget expect p7zip-full p7zip-rar
-
-       
-       - name: Clone ErfanGSI Source Code
-         run: git clone --recurse-submodules https://github.com/Area69Lab/ErfanGSIs
-       
-       - name: Setting up ErfanGSI requirements
+            sudo -E apt-get -qq install git openjdk-8-jdk wget
+            sudo -E apt-get -qq install python3
+            sudo -E apt-get -qq install simg2img
+            sudo apt-get install -y expect
+            
+                 
+       - name: ACCESS 10001001100
          run: |
-              sudo chmod -R 777 ErfanGSIs
-              cd ErfanGSIs
-              sudo bash setup.sh
+           git clone --recurse-submodules https://github.com/SmPriyo/ErfanGSIs-PriyoGSIs.git ErfanGSIs
+           sudo chmod -R 777 ErfanGSIs
+           cd ErfanGSIs
+           sudo bash setup.sh 
        
-       - name: Download Stock Rom & Generate GSI
-         run: sudo ./ErfanGSIs/url2GSI.sh $ROM_URL $ROM_NAME
-       
-       - name: Zip Aonly and upload 
+       - name: DOWNLOADING THE FIRMWARE
+         run: cd ErfanGSIs && sudo ./url2GSI.sh $ROM_URL $ROM_NAME 
+     
+                       
+       - name: Zipping BOTH COOKIES
          run: |
               mkdir final
               sudo chmod -R 777 ErfanGSIs/output
+              zip -r ErfanGSIs/output/$ZIP_NAME-GSI-Aonly.7z ErfanGSIs/output/*-Aonly-*.img 
+              zip -r ErfanGSIs/output/$ZIP_NAME-GSI-AB.7z ErfanGSIs/output/*-AB-*.img
+              
+       - name: uploading to PRIYOFILES
+         run: |   
               cd ErfanGSIs/output
-              7z a $ZIP_NAME-GSI-Aonly.7z *-Aonly-*.img
               expect -c " 
               spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
               expect \"yes/no\"
@@ -55,33 +64,35 @@ jobs:
               expect \"Password\"        
               send \"${{ secrets.SFPASS }}\r\"
               expect \"sftp> \"
-              send \"cd ${{ secrets.SFDIR }}\r\"
+              send \"cd ${{ secrets.SFDIRA2 }}\r\"
+              set timeout -1
+              send \"put *-Aonly-*.txt\r\"
+              expect \"Uploading\"
+              expect \"100%\"
+              expect \"sftp>\"
+              interact"
+              expect -c "
+              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
+              expect \"Password\"
+              send \"${{ secrets.SFPASS }}\r\"
+              expect \"sftp> \"
+              send \"cd ${{ secrets.SFDIRA1 }}\r\"
               set timeout -1
               send \"put $ZIP_NAME-GSI-Aonly.7z\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"bye\r\"
-              interact"      
-       - name: Zip AB and upload 
-         run: |
-              cd ErfanGSIs/output
-              7z a $ZIP_NAME-GSI-AB.7z *-AB-*.img
-              expect -c " 
+              interact"
+              expect -c "
               spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-              expect \"Password\"        
+              expect \"Password\"
               send \"${{ secrets.SFPASS }}\r\"
               expect \"sftp> \"
-              send \"cd ${{ secrets.SFDIR }}\r\"
+              send \"cd ${{ secrets.SFDIRA1 }}\r\"
               set timeout -1
               send \"put $ZIP_NAME-GSI-AB.7z\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
               send \"bye\r\"
-              interact"
-       - name: Print build info
-         run: |
-              cat ErfanGSIs/output/*-Aonly-*.txt
-         
-            
+              interact"  

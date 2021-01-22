@@ -8,9 +8,9 @@ on:
       types: [started]
     
 env:              #change ROM_URL,ROM_NAME,ZIP_NAME,ROMZIP_NAME respectivley. ROM_NAME is case sensitive 
-  ROM_URL: https://pdrive.priyo.workers.dev/0://OxygenOS10_Crescent_V2_davinci.zip
-  ROM_NAME: MIUI
-  ZIP_NAME: MIUI-Davinci-RedmiS2-@PriyoGSI-20-01-2021
+  ROM_URL: https://pdrive.priyo.workers.dev/0://7.2.0-201911281522-user-dlt-f7a00add9b-root.zip
+  ROM_NAME: SmartisanOS
+  ZIP_NAME: SmartisanOS-@PriyoGSI-22-01-2021
   SECRETS_PASSWORD: ${{ secrets.SFPASS }}
   TZ: Asia/Bangladesh
   SFDIRA1: cd /home/smpriyo/pfs/projects/priyogsis/files/PriyoFiles
@@ -38,7 +38,7 @@ jobs:
                  
        - name: ACCESS 10001001100
          run: |
-           git clone --recurse-submodules https://github.com/SmPriyo/ErfanGSIs-PriyoGSIs.git ErfanGSIs
+           git clone --recurse-submodules https://github.com/Priiiyo/PGTools-ErfanGSIs ErfanGSIs
            sudo chmod -R 777 ErfanGSIs
            cd ErfanGSIs
            sudo bash setup.sh 

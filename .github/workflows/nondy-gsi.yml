@@ -8,9 +8,9 @@ on:
       types: [started]
     
 env:              #change ROM_URL,ROM_NAME,ZIP_NAME,ROMZIP_NAME respectivley. ROM_NAME is case sensitive 
-  ROM_URL: https://pdrive.priyo.workers.dev/0://7.2.0-201911281522-user-dlt-f7a00add9b-root.zip
-  ROM_NAME: SmartisanOS
-  ZIP_NAME: SmartisanOS-@PriyoGSI-22-01-2021
+  ROM_URL: https://arcrec.mark41stark.workers.dev/Mark41-Uploads/OneOS_HMNote7_21.1.27_V125-10.zip
+  ROM_NAME: MIUI
+  ZIP_NAME: MIUI-OneOS-@PriyoGSI-28-01-2021
   SECRETS_PASSWORD: ${{ secrets.SFPASS }}
   TZ: Asia/Bangladesh
   SFDIRA1: cd /home/smpriyo/pfs/projects/priyogsis/files/PriyoFiles

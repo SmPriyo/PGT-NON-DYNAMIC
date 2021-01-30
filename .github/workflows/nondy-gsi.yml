@@ -8,9 +8,9 @@ on:
       types: [started]
     
 env:              #change ROM_URL,ROM_NAME,ZIP_NAME,ROMZIP_NAME respectivley. ROM_NAME is case sensitive 
-  ROM_URL: https://arcrec.mark41stark.workers.dev/Mark41-Uploads/OneOS_HMNote7_21.1.27_V125-10.zip
+  ROM_URL: https://helix.uvscuti.workers.dev/RazerOs_lavender_21.1.27_10.zip
   ROM_NAME: MIUI
-  ZIP_NAME: MIUI-OneOS-@PriyoGSI-28-01-2021
+  ZIP_NAME: MIUI-RazerED-@PriyoGSI-30-01-2021
   SECRETS_PASSWORD: ${{ secrets.SFPASS }}
   TZ: Asia/Bangladesh
   SFDIRA1: cd /home/smpriyo/pfs/projects/priyogsis/files/PriyoFiles

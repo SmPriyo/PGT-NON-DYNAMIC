@@ -8,9 +8,9 @@ on:
       types: [started]
     
 env:              #change ROM_URL,ROM_NAME,ZIP_NAME,ROMZIP_NAME respectivley. ROM_NAME is case sensitive 
-  ROM_URL: https://helix.uvscuti.workers.dev/RazerOs_lavender_21.1.27_10.zip
+  ROM_URL: https://pdrive.priyo.workers.dev/0://HN%20Gaming_REBORN_V11.0.7.0.QEACNXM_10.zip
   ROM_NAME: MIUI
-  ZIP_NAME: MIUI-RazerED-@PriyoGSI-30-01-2021
+  ZIP_NAME: MIUI-HN-Gaming-REBORN-V11-@PriyoGSI-11-02-2021
   SECRETS_PASSWORD: ${{ secrets.SFPASS }}
   TZ: Asia/Bangladesh
   SFDIRA1: cd /home/smpriyo/pfs/projects/priyogsis/files/PriyoFiles
